@@ -31,7 +31,7 @@ PoC write-up for the **CreateEdge** Web Lab on Hackviser. The attack chain is:
 3. Who is the target audience of their campaign?
 4. What is the name of Create Edge's secret marketing tool?
 
-![alt text](<web page.png>)
+![alt text](<screenshots/web page.png>)
 ---
 
 ## Reconnaissance
@@ -75,7 +75,7 @@ gobuster dir -u "http://createdge.hv/" -w /usr/share/wordlists/Seclists/Discover
 
 The `/ftp/` directory is served over HTTP — any file uploaded via FTP is immediately browser-accessible.
 
-![alt text](<ftp directory.png>)
+![alt text](<screenshots/ftp directory.png>)
 ### FTP Vulnerability Scan
 
 ```bash
@@ -157,13 +157,13 @@ Manual enumeration via the webshell revealed an `/archive` directory.
 The file `detailed_client_info.csv` contained the answer to Q3  (target audience).
 The file `orbitronix_system-2023-11-20.txt` which contains the answer to Q4.
 
-![alt text](<last file.png>)
+![alt text](<screenshots/last file.png>)
 
 I had one problem on how to download those file in my computer , but hopefully python3 existed in the target machine , and then I downloaded them using this command :
 ```
 python3 -m http.server 8888
 ``` 
-![alt text](powny.png)
+![alt text](screenshots/powny.png)
 ---
 
 ## Attack Vectors & What I Learned
