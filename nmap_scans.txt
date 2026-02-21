@@ -7,10 +7,9 @@
 SCAN 1 — Initial Service Detection
 ================================================================================
 
-Command:
-  nmap -sCV createdge.hv
+┌──(hamzabk㉿kali)-[~/Downloads]
+└─$ nmap -sCV createdge.hv
 
-Output:
   Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-19 19:37 EST
   Nmap scan report for createdge.hv (172.20.6.117)
   Host is up (0.13s latency).
@@ -33,10 +32,9 @@ Key Findings:
 SCAN 2 — FTP Vulnerability Scan (Port 21)
 ================================================================================
 
-Command:
-  nmap -sCV -p 21 --script vuln createdge.hv
+┌──(hamzabk㉿kali)-[~/Downloads]
+└─$  nmap -sCV -p 21 --script vuln createdge.hv
 
-Output:
   Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-19 20:48 EST
   Nmap scan report for createdge.hv (172.20.6.117)
   Host is up (0.13s latency).
@@ -61,10 +59,9 @@ Key Findings:
 SCAN 3 — HTTP Vulnerability Scan (Port 80)
 ================================================================================
 
-Command:
-  nmap -sCV -p 80 --script vuln createdge.hv
+┌──(hamzabk㉿kali)-[~/Downloads]
+└─$ nmap -sCV -p 80 --script vuln createdge.hv
 
-Output:
   Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-20 18:33 EST
   Nmap scan report for createdge.hv (172.20.5.55)
   Host is up (0.082s latency).
@@ -143,7 +140,6 @@ Key Findings:
 SCAN 4 — Direcrtory scan with gobuster
 ================================================================================
 
-                                                                                                                                                                                              
 ┌──(hamzabk㉿kali)-[~/Downloads]
 └─$ gobuster dir -u "http://createdge.hv/" -w /usr/share/wordlists/Seclists/Discovery/Web-Content/common.txt
 ===============================================================
