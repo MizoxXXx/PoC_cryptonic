@@ -1,0 +1,206 @@
+# Nmap Scan Results — createdge.hv
+# Target: createdge.hv (172.20.6.117 / 172.20.5.55)
+# Tester: hamzabk | Date: 2026-02-19 to 2026-02-20
+# Platform: Hackviser — CreateEdge Lab
+
+================================================================================
+SCAN 1 — Initial Service Detection
+================================================================================
+
+Command:
+  nmap -sCV createdge.hv
+
+Output:
+  Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-19 19:37 EST
+  Nmap scan report for createdge.hv (172.20.6.117)
+  Host is up (0.13s latency).
+  Not shown: 998 closed tcp ports (reset)
+  PORT   STATE SERVICE VERSION
+  21/tcp open  ftp     vsftpd 3.0.3
+  80/tcp open  http    Apache httpd 2.4.56 ((Debian))
+  |_http-server-header: Apache/2.4.56 (Debian)
+  |_http-title: CREATEEDGE
+  Service Info: OS: Unix
+
+  Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+  Nmap done: 1 IP address (1 host up) scanned in 14.36 seconds
+
+Key Findings:
+  - Port 21: vsftpd 3.0.3 (FTP)
+  - Port 80: Apache httpd 2.4.56 (Debian) — HTTP
+
+================================================================================
+SCAN 2 — FTP Vulnerability Scan (Port 21)
+================================================================================
+
+Command:
+  nmap -sCV -p 21 --script vuln createdge.hv
+
+Output:
+  Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-19 20:48 EST
+  Nmap scan report for createdge.hv (172.20.6.117)
+  Host is up (0.13s latency).
+
+  PORT   STATE SERVICE VERSION
+  21/tcp open  ftp     vsftpd 3.0.3
+  | vulners:
+  |   vsftpd 3.0.3:
+  |       CVE-2021-30047    7.5   https://vulners.com/cve/CVE-2021-30047
+  |_      CVE-2021-3618     7.4   https://vulners.com/cve/CVE-2021-3618
+  Service Info: OS: Unix
+
+  Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+  Nmap done: 1 IP address (1 host up) scanned in 14.08 seconds
+
+Key Findings:
+  - CVE-2021-30047 (CVSS 7.5): vsftpd DoS — service crashes, no shell returned
+  - CVE-2021-3618  (CVSS 7.4): ALPACA attack (protocol confusion)
+  - Neither CVE yields direct code execution in this configuration
+
+================================================================================
+SCAN 3 — HTTP Vulnerability Scan (Port 80)
+================================================================================
+
+Command:
+  nmap -sCV -p 80 --script vuln createdge.hv
+
+Output:
+  Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-20 18:33 EST
+  Nmap scan report for createdge.hv (172.20.5.55)
+  Host is up (0.082s latency).
+
+  PORT   STATE SERVICE VERSION
+  80/tcp open  http    Apache httpd 2.4.56 ((Debian))
+  |_http-server-header: Apache/2.4.56 (Debian)
+
+  | vulners:
+  |   cpe:/a:apache:http_server:2.4.56:
+  |       CVE-2024-38476    9.8   https://vulners.com/cve/CVE-2024-38476
+  |       CVE-2024-38474    9.8   https://vulners.com/cve/CVE-2024-38474
+  |       CNVD-2024-36391   9.8   https://vulners.com/cnvd/CNVD-2024-36391
+  |       CNVD-2024-36388   9.8   https://vulners.com/cnvd/CNVD-2024-36388
+  |       PACKETSTORM:213257  9.1   https://vulners.com/packetstorm/PACKETSTORM:213257  *EXPLOIT*
+  |       CVE-2025-23048    9.1   https://vulners.com/cve/CVE-2025-23048
+  |       CVE-2024-40898    9.1   https://vulners.com/cve/CVE-2024-40898
+  |       CVE-2024-38475    9.1   https://vulners.com/cve/CVE-2024-38475
+  |       CNVD-2025-16610   9.1   https://vulners.com/cnvd/CNVD-2025-16610
+  |       CNVD-2024-36387   9.1   https://vulners.com/cnvd/CNVD-2024-36387
+  |       CNVD-2024-33814   9.1   https://vulners.com/cnvd/CNVD-2024-33814
+  |       3F71F065-66D4-541F-A813-9F1A2F2B1D91  8.8   https://vulners.com/githubexploit/...  *EXPLOIT*
+  |       CVE-2025-58098    8.3   https://vulners.com/cve/CVE-2025-58098
+  |       CVE-2024-38473    8.1   https://vulners.com/cve/CVE-2024-38473
+  |       CVE-2024-39573    7.5   https://vulners.com/cve/CVE-2024-39573
+  |       CVE-2024-38477    7.5   https://vulners.com/cve/CVE-2024-38477
+  |       CVE-2024-38472    7.5   https://vulners.com/cve/CVE-2024-38472
+  |       CVE-2024-27316    7.5   https://vulners.com/cve/CVE-2024-27316
+  |       CVE-2023-43622    7.5   https://vulners.com/cve/CVE-2023-43622
+  |       CVE-2023-31122    7.5   https://vulners.com/cve/CVE-2023-31122
+  |       CVE-2023-38709    7.3   https://vulners.com/cve/CVE-2023-38709
+  |       CVE-2024-24795    6.3   https://vulners.com/cve/CVE-2024-24795
+  |       CVE-2023-45802    5.9   https://vulners.com/cve/CVE-2023-45802
+  |_      CVE-2024-36387    5.4   https://vulners.com/cve/CVE-2024-36387
+
+  | http-sql-injection:
+  |   Possible sqli for queries:
+  |     http://createdge.hv:80/vendor/bootstrap/js/?C=N%3BO%3DD%27%20OR%20sqlspider
+  |     http://createdge.hv:80/vendor/bootstrap/js/?C=S%3BO%3DA%27%20OR%20sqlspider
+  |     http://createdge.hv:80/vendor/jquery/?C=D%3BO%3DA%27%20OR%20sqlspider
+  |     http://createdge.hv:80/vendor/jquery/?C=S%3BO%3DA%27%20OR%20sqlspider
+  |     http://createdge.hv:80/vendor/bootstrap/?C=N%3BO%3DD%27%20OR%20sqlspider
+  |_    [... additional Apache directory listing sort parameters omitted — all false positives]
+
+  | http-enum:
+  |   /ftp/:     Potentially interesting directory w/ listing on 'apache/2.4.56 (debian)'
+  |_  /vendor/:  Potentially interesting directory w/ listing on 'apache/2.4.56 (debian)'
+
+  |_http-dombased-xss:  Couldn't find any DOM based XSS.
+  |_http-stored-xss:    Couldn't find any stored XSS vulnerabilities.
+  |_http-csrf:          Couldn't find any CSRF vulnerabilities.
+  | http-fileupload-exploiter:
+  |_  Couldn't find a file-type field.
+
+  Nmap done: 1 IP address (1 host up) scanned in 51.59 seconds
+
+Key Findings:
+  [CRITICAL]
+  - CVE-2024-38476 (CVSS 9.8): Apache output handling flaw — potential RCE
+  - CVE-2024-38474 (CVSS 9.8): Substitution encoding bypass
+  - CVE-2024-38475 (CVSS 9.1): mod_rewrite bypass — source file disclosure
+
+  [HIGH]
+  - CVE-2024-40898 (CVSS 9.1): SSRF via mod_rewrite
+  - CVE-2024-38473 (CVSS 8.1): mod_rewrite abuse
+
+  [FALSE POSITIVES — Confirmed Not Exploitable]
+  - SQL injection results: Apache directory listing sort params (?C=N&O=D)
+    Confirmed negative with: sqlmap GET parameter 'C' — not injectable
+
+  [MISCONFIGURATIONS]
+  - /ftp/ directory listing enabled and served over HTTP (critical exposure)
+  - /vendor/ directory listing enabled
+
+================================================================================
+SCAN 4 — Direcrtory scan with gobuster
+================================================================================
+
+                                                                                                                                                                                              
+┌──(hamzabk㉿kali)-[~/Downloads]
+└─$ gobuster dir -u "http://createdge.hv/" -w /usr/share/wordlists/Seclists/Discovery/Web-Content/common.txt
+===============================================================
+Gobuster v3.8
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://createdge.hv/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/Seclists/Discovery/Web-Content/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.8
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+/.hta                 (Status: 403) [Size: 277]
+/.htaccess            (Status: 403) [Size: 277]
+/.htpasswd            (Status: 403) [Size: 277]
+/assets               (Status: 301) [Size: 313] [--> http://createdge.hv/assets/]
+/ftp                  (Status: 301) [Size: 310] [--> http://createdge.hv/ftp/]
+/index.html           (Status: 200) [Size: 10752]
+/server-status        (Status: 403) [Size: 277]
+/vendor               (Status: 301) [Size: 313] [--> http://createdge.hv/vendor/]
+Progress: 4751 / 4751 (100.00%)
+===============================================================
+Finished
+===============================================================
+
+
+================================================================================
+SCAN 5 — successfull Credentials discovery by Hydra 
+================================================================================
+
+┌──(hamzabk㉿kali)-[~/Downloads]
+└─$ hydra -C  /usr/share/wordlists/Seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt  172.20.5.55 ftp 
+Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-20 20:57:59
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 66 login tries, ~5 tries per task
+[DATA] attacking ftp://172.20.5.55:21/
+[21][ftp] host: 172.20.5.55   login: ftpuser   password: password
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-20 20:58:06
+
+
+================================================================================
+NOTES
+================================================================================
+
+  IP Address discrepancy between scans (172.20.6.117 vs 172.20.5.55) is due to
+  the lab resetting between sessions — the hostname createdge.hv resolves
+  consistently within each session.
+
+  The primary exploitation path did NOT require any of the Apache CVEs listed
+  above. The attack chain was:
+    gobuster (/ftp/ directory) → hydra (FTP default creds) → webshell upload → RCE
+
+  The Apache CVEs represent additional, uninvestigated attack surface that would
+  be prioritized in a real-world engagement, particularly CVE-2024-38476 (9.8).
